@@ -31,10 +31,10 @@ def make_hashtable_refactored(nbuckets):
 	return hashtable
 
 
-
 """find bucket for keyword"""
 
 def hashtable_get_bucket(htable, keyword):
+	print htable[hash_string(keyword, len(table))]
 	return htable[hash_string(keyword, len(table))]
 
 
@@ -60,7 +60,7 @@ def hashtable_lookup(htable, key):
 	else:
 		return None
 
-print hashtable_lookup(table, 'radha')
+#print hashtable_lookup(table, 'radha')
 
 
 
@@ -70,8 +70,11 @@ def hashtable_update(htable, key, value):
 	bucket = hashtable_get_bucket(htable, key)	
 	for entry in bucket:
 		if entry[0]==key:
-			entry[1]=value						
-	return htable	
+			entry[1]=value
+			return						
+	bucket.append([key, value])
+
+#very similar to lookup. Can we avoid repeating code? 	
 
 # def hashtable_update(htable, key, value):
 # 	bucket = hashtable_get_bucket(htable, key)	
@@ -83,12 +86,13 @@ def hashtable_update(htable, key, value):
 table = [[['Ellis', 11], ['Francis', 13]], [], [['Bill', 17], ['Zoe', 14]],
 [['Coach', 4]], [['Louis', 29], ['Nick', 2], ['Rochelle', 4]]]			
 
-print hashtable_get_bucket(table, 'Zoe')
-print hashtable_get_bucket(table, 'Brick')
+hashtable_get_bucket(table, 'Zoe')
+hashtable_get_bucket(table, 'Brick')
 
-hashtable_update(table, 'Bill', 42)
-hashtable_update(table, 'Rochelle', 94)
-hashtable_update(table, 'Zed', 68)
+#hashtable_update(table, 'Bill', 42)
+#hashtable_update(table, 'Rochelle', 94)
+#hashtable_update(table, 'Zed', 68)
+#print table
 
 
 
