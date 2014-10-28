@@ -21,8 +21,8 @@ class Hashtable(object):
 			self.hashtable.append([])
 		return self.hashtable
 
-	def initialize_hashtable(self, name, size):
-		return Hashtable(name, size)
+	# def initialize_hashtable(self, name, size):
+	# 	return Hashtable(name, size)
 
 	def hash_string(self, key):
 		count = 0		
