@@ -4,107 +4,101 @@ class Hashtable(object):
 
 	hashtable = []
 	total_keys = 0
+	all_entries = []
 
-	def __init__(self, name, size):
-		self.name = name
+	def __init__(self, size):		
 		self.size = size
-		self.table = self.make_hashtable()
-		
+		self.table = self.build_hashtable()		
 		
 	def __getitem__(self, index):
 		print self.hashtable[index]
 
 	def __repr__(self):
-		return "name: {}, size: {}, draw hashtable: {}".format(self.name, self.size, self.table)
+		return "size: {}, draw hashtable: {}".format(self.size, self.table)
 
-	def make_hashtable(self):		
+	def build_hashtable(self):		
 		for i in range(0, self.size):
 			self.hashtable.append([])
 		return self.hashtable
 
+	def initialize_hashtable(self, name, size):
+		return Hashtable(name, size)
+
 	def hash_string(self, key):
-		count = 0
+		count = 0		
 		for k in key:
-			count = count + ord(k)
-		allocated_bucket = count%self.size
-		print key
-		print "initial bucket is:"
-		print allocated_bucket		
+			count = count + ord(k)						
+		allocated_bucket = count%self.size						
 		return allocated_bucket
 
 	def hashtable_get_bucket(self, key):
-		bucket_number = self.hash_string(key)
+		bucket_number = self.hash_string(key)		
 		return self.hashtable[bucket_number]
 
-	def hashtable_bucket_find(self, bucket, key):
+	def hashtable_find_bucket(self, bucket, key):
 		for entry in bucket:
-			if entry[0]==key:
-				print "entry is"
-				print entry				
+			if entry[0] == key:
 				return entry
-			else:
-				return None
+		return None
 
-	def hashtable_insert(self, key, value):
+	def hashtable_insert(self, key, value):		
 		bucket = self.hashtable_get_bucket(key)
-		entry = self.hashtable_bucket_find(bucket, key)
-		if entry:				
-			entry[1]=value
-			return
-		bucket.append([key, value])
+		entry = self.hashtable_find_bucket(bucket, key)
+		if entry:
+			entry[1] = value
+			for each in self.all_entries:
+			    if each[0]==key:
+			    	each[1]=value
+			    	return
+		else:
+			bucket.append([key, value])
+		self.all_entries.append([key, value]) 				
 		self.total_keys = self.total_keys + 1		
+		self.check_load()		
 		return self.total_keys	
 
 	def hashtable_lookup(self, key):
-		bucket = self.hashtable_get_bucket(key)
-		entry = self.hashtable_bucket_find(bucket, key)
-		if entry:
-			return entry[1]
+		entry = self.hashtable_find_bucket(self.hashtable_get_bucket(key), key)
+		if entry:					
+			return entry[1]			
 		else:
 			return "Error! {} is not a key in the hashtable".format(key)
 
-	def check_load(self):
-		load_factor = float(self.total_keys) / float(self.size)
-		if load_factor > 0.66:
-			print "enlarge table"
+	def check_load(self):		
+		load_factor = float(self.total_keys) / float(self.size)		
+		if load_factor > 0.66:			
 			self.enlarge_hashtable()
-		if load_factor < 0.33:
-			print "shrink table"
+		if load_factor < 0.33:			
 			self.shrink_hashtable()
 
-	def enlarge_hashtable(self):
+	def enlarge_hashtable(self):		
 		existing_buckets = self.size		
 		self.size = self.size * 2	
 		add_new_buckets = self.size - existing_buckets		
 		for i in range(0, add_new_buckets):
-			self.hashtable.append([])		
-		self.re_distribute()					
+			self.hashtable.append([])				
+		self.re_distribute()							
 		return self.hashtable
 
+	def clear_buckets(self):
+		for bucket in self.hashtable:					
+			bucket[:] = []			
+		return bucket
+
 	def re_distribute(self):
-		for bucket in self.hashtable:
-			for entry in bucket:				
-				key = entry[0]
-				value = entry[1]
-				new_bucket = self.hashtable_get_bucket(entry[0])
-				#print "entry[0] is"
-				#print entry[0]
-				#even though this prints initial bucket it is the new bucket
-				if ([key, value]) in new_bucket:
-				    break
-				else:
-					if ([key, value]) in bucket:
-						bucket.remove([key, value])					
-					new_bucket.append([key, value])				
-	
+		self.clear_buckets()		
+		for each in self.all_entries:
+			bucket = self.hashtable_get_bucket(each[0])
+			entry = self.hashtable_find_bucket(bucket, each[0])
+			bucket.append([each[0], each[1]])
 					
-	def shrink_hashtable(self):
+	def shrink_hashtable(self):		
 		existing_buckets = self.size
 		self.size = self.size / 2
 		remove_buckets = existing_buckets - self.size		
 		for i in range(0, remove_buckets):
 			self.hashtable.remove([])
-		self.re_distribute()
+		self.re_distribute()		
 		return self.hashtable			
 		
 	def hashtable_delete(self, key):
@@ -112,49 +106,79 @@ class Hashtable(object):
 		for entry in bucket:
 			if entry[0]==key:
 				bucket.remove(entry[:2])
+				self.all_entries.remove(entry[:2])
+		self.total_keys = self.total_keys - 1	
+		self.check_load()
 		return 	
 
-hashtable1 = Hashtable('test', 40)
+hashtable1 = Hashtable(10)
 
+"""test insert"""
 hashtable1.hashtable_insert('cat', 1)
 hashtable1.hashtable_insert('dog', 2)
 hashtable1.hashtable_insert('fish', 3)
 hashtable1.hashtable_insert('pigeon', 4)
 hashtable1.hashtable_insert('whale', 5)
 hashtable1.hashtable_insert('crocodile', 6)
+hashtable1.hashtable_insert('killer whale', 10)
 hashtable1.hashtable_insert('elephant', 7)
 hashtable1.hashtable_insert('lizard', 8)
 hashtable1.hashtable_insert('snake', 9)
-hashtable1.hashtable_insert('killer whale', 10)
 hashtable1.hashtable_insert('duck',11)
-hashtable1.hashtable_insert('suraj', 13)
+hashtable1.hashtable_insert('suraj',12)
+hashtable1.hashtable_insert('radha', 13)
+hashtable1.hashtable_insert('zebra', 14)
+hashtable1.hashtable_insert('donkey', 15)
+hashtable1.hashtable_insert('happy piglet', 16)
 
-print "hashtable without resizing:"
-print hashtable1.hashtable
-
-print hashtable1.check_load()
-
-print "hashtable with new buckets"
-print hashtable1.hashtable
-
-print hashtable1.size
-hashtable1.re_distribute()
-
-print hashtable1.hashtable_insert('radha', 12)
-print hashtable1.hashtable_insert('zebra', 13)
-
+"""test lookup"""
+print "test lookup"
+print hashtable1.hashtable_lookup('cat')
+print hashtable1.hashtable_lookup('dog')
+print hashtable1.hashtable_lookup('fish')
+print hashtable1.hashtable_lookup('pigeon')
+print hashtable1.hashtable_lookup('whale')
+print hashtable1.hashtable_lookup('crocodile')
+print hashtable1.hashtable_lookup('killer whale')
+print hashtable1.hashtable_lookup('elephant')
+print hashtable1.hashtable_lookup('lizard')
 print hashtable1.hashtable_lookup('snake')
+print hashtable1.hashtable_lookup('duck')
+print hashtable1.hashtable_lookup('suraj')
+print hashtable1.hashtable_lookup('radha')
+print hashtable1.hashtable_lookup('zebra')
+print hashtable1.hashtable_lookup('happy piglet')
 
-print hashtable1.hashtable
+"""test deletion"""
+print hashtable1.hashtable_delete('donkey')
+print hashtable1.hashtable_delete('zebra')
 
+print hashtable1.hashtable_lookup('donkey')
 print hashtable1.hashtable_lookup('zebra')
 
+"""test value update"""
+
+hashtable1.hashtable_insert('elephant', 'super')
+hashtable1.hashtable_insert('radha', 'TG')
+hashtable1.hashtable_insert('lizard', 1000)
+print hashtable1.hashtable_lookup('lizard')
+print hashtable1.hashtable_lookup('elephant')
+
+print hashtable1
 
 
 # Problems with current code:
-# Seeing some repetition of entries. need to delete the existing first?
 # needs refactoring as there is general code repetition
-# hashtable_lookup - there is a bug whereby if the entry is not the first in the bucket. 
+
+#helper function to create a new hashtable the way I created the bikes? 
+#Flow for resizing where add all keys and values to a list, then delete all the entries
+#from hashtable, resize hashtable and then get the new bucket for each entry and all to resized hashtable
+
+#make sure you know what each data structure is in the program. eg buckets is a list
+
+
+
+
 
 
 
