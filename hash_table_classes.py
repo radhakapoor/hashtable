@@ -19,10 +19,7 @@ class Hashtable(object):
 	def build_hashtable(self):		
 		for i in range(0, self.size):
 			self.hashtable.append([])
-		return self.hashtable
-
-	# def initialize_hashtable(self, name, size):
-	# 	return Hashtable(name, size)
+		return self.hashtable	
 
 	def hash_string(self, key):
 		count = 0		
@@ -167,15 +164,13 @@ print hashtable1.hashtable_lookup('elephant')
 print hashtable1
 
 
-# Problems with current code:
-# needs refactoring as there is general code repetition
+#Issues with current code:
+#I used a list to save keys and values which I can pass into the new hashtable upon re-sizing.
+#Better way to create a new instance of the hashtable and then re-allocate buckets in that? 
 
-#helper function to create a new hashtable the way I created the bikes? 
-#Flow for resizing where add all keys and values to a list, then delete all the entries
-#from hashtable, resize hashtable and then get the new bucket for each entry and all to resized hashtable
+#Helper function to create a new hashtable the way I created the bikes? 
 
-#make sure you know what each data structure is in the program. eg buckets is a list
-
+#Make sure I know what each data structure is in the program. eg buckets is a list
 
 
 
