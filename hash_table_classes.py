@@ -1,25 +1,18 @@
 
 
 class Hashtable(object):
-
-	hashtable = []
+	
 	total_keys = 0
 	all_entries = []
 
 	def __init__(self, size):		
 		self.size = size
-		self.table = self.build_hashtable()		
-		
-	def __getitem__(self, index):
-		print self.hashtable[index]
+		self.hashtable = []
+		for i in xrange(self.size):
+		    self.hashtable.append([])	
 
 	def __repr__(self):
-		return "size: {}, draw hashtable: {}".format(self.size, self.table)
-
-	def build_hashtable(self):		
-		for i in range(0, self.size):
-			self.hashtable.append([])
-		return self.hashtable	
+		return "size: {}, draw hashtable: {}".format(self.size, self.hashtable)	
 
 	def hash_string(self, key):
 		count = 0		
@@ -108,7 +101,7 @@ class Hashtable(object):
 		self.check_load()
 		return 	
 
-hashtable1 = Hashtable(10)
+hashtable1 = Hashtable(30)
 
 """test insert"""
 hashtable1.hashtable_insert('cat', 1)
@@ -117,10 +110,10 @@ hashtable1.hashtable_insert('fish', 3)
 hashtable1.hashtable_insert('pigeon', 4)
 hashtable1.hashtable_insert('whale', 5)
 hashtable1.hashtable_insert('crocodile', 6)
-hashtable1.hashtable_insert('killer whale', 10)
 hashtable1.hashtable_insert('elephant', 7)
 hashtable1.hashtable_insert('lizard', 8)
 hashtable1.hashtable_insert('snake', 9)
+hashtable1.hashtable_insert('killer whale', 10)
 hashtable1.hashtable_insert('duck',11)
 hashtable1.hashtable_insert('suraj',12)
 hashtable1.hashtable_insert('radha', 13)
@@ -136,10 +129,11 @@ print hashtable1.hashtable_lookup('fish')
 print hashtable1.hashtable_lookup('pigeon')
 print hashtable1.hashtable_lookup('whale')
 print hashtable1.hashtable_lookup('crocodile')
-print hashtable1.hashtable_lookup('killer whale')
 print hashtable1.hashtable_lookup('elephant')
 print hashtable1.hashtable_lookup('lizard')
+print hashtable1.hashtable_lookup('melancholy mouse')
 print hashtable1.hashtable_lookup('snake')
+print hashtable1.hashtable_lookup('killer whale')
 print hashtable1.hashtable_lookup('duck')
 print hashtable1.hashtable_lookup('suraj')
 print hashtable1.hashtable_lookup('radha')
@@ -164,13 +158,11 @@ print hashtable1.hashtable_lookup('elephant')
 print hashtable1
 
 
-#Issues with current code:
-#I used a list to save keys and values which I can pass into the new hashtable upon re-sizing.
-#Better way to create a new instance of the hashtable and then re-allocate buckets in that? 
 
-#Helper function to create a new hashtable the way I created the bikes? 
 
-#Make sure I know what each data structure is in the program. eg buckets is a list
+
+
+
 
 
 
