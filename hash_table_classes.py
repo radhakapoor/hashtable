@@ -37,14 +37,16 @@ class Hashtable(object):
 	def hashtable_insert(self, key, value):		
 		bucket = self.hashtable_get_bucket(key)
 		entry = self.hashtable_get_entry(bucket, key)
+		"""updating the value of existing key"""
 		if entry:
 			entry[1] = value
 			for each in self.all_entries:
 			    if each[0]==key:
 			    	each[1]=value
 			return
-		else:
-			bucket.append([key, value])
+			
+		"""adding new key, value"""		
+		bucket.append([key, value])
 		self.all_entries.append([key, value]) 				
 		self.total_keys = self.total_keys + 1		
 		self.check_load()		
@@ -104,7 +106,7 @@ class Hashtable(object):
 		self.check_load()
 		return	
 	
-hashtable1 = Hashtable(15)
+hashtable1 = Hashtable(20)
 
 """check insert"""
 hashtable1.hashtable_insert('cat', 1)
