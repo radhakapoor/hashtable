@@ -36,21 +36,16 @@ class Hashtable(object):
 
 	def hashtable_insert(self, key, value):		
 		bucket = self.hashtable_get_bucket(key)
-		entry = self.hashtable_get_entry(bucket, key)
-		"""updating the value of existing key"""
-		if entry:
+		entry = self.hashtable_get_entry(bucket, key)		
 			entry[1] = value
 			for each in self.all_entries:
 			    if each[0]==key:
-			    	each[1]=value
-			return
-			
-		"""adding new key, value"""		
+			    	each[1]=value			
 		bucket.append([key, value])
 		self.all_entries.append([key, value]) 				
 		self.total_keys = self.total_keys + 1		
 		self.check_load()		
-		return 	
+			
 
 	def hashtable_lookup(self, key):
 		entry = self.hashtable_get_entry(self.hashtable_get_bucket(key), key)
@@ -84,7 +79,7 @@ class Hashtable(object):
 		self.clear_buckets()		
 		for each in self.all_entries:
 			bucket = self.hashtable_get_bucket(each[0])
-			entry = self.hashtable_get_entry(bucket, each[0])
+			#entry = self.hashtable_get_entry(bucket, each[0])
 			bucket.append([each[0], each[1]])
 					
 	def shrink_hashtable(self):		
@@ -106,7 +101,7 @@ class Hashtable(object):
 		self.check_load()
 		return	
 	
-hashtable1 = Hashtable(20)
+hashtable1 = Hashtable(10)
 
 """check insert"""
 hashtable1.hashtable_insert('cat', 1)
@@ -129,18 +124,18 @@ print hashtable1.hashtable_lookup('crocodile')
 print hashtable1.hashtable_lookup('elephant')
 print hashtable1.hashtable_lookup('lizard')
 
-"""check deletion"""
-hashtable1.hashtable_delete('crocadile')
-hashtable1.hashtable_delete('lizard')
+# """check deletion"""
+# hashtable1.hashtable_delete('crocadile')
+# hashtable1.hashtable_delete('lizard')
 
 """check lookup of non-existing key"""
 print hashtable1.hashtable_lookup('donkey')
 
-"""check update of value"""
-hashtable1.hashtable_insert('elephant', 'super')
-hashtable1.hashtable_insert('lizard', 1000)
-print hashtable1.hashtable_lookup('lizard')
-print hashtable1.hashtable_lookup('elephant')
+# """check update of value"""
+# hashtable1.hashtable_insert('elephant', 'super')
+# hashtable1.hashtable_insert('lizard', 1000)
+# print hashtable1.hashtable_lookup('lizard')
+# print hashtable1.hashtable_lookup('elephant')
 
 print hashtable1
 
