@@ -36,13 +36,17 @@ class Hashtable(object):
 
 	def hashtable_insert(self, key, value):		
 		bucket = self.hashtable_get_bucket(key)
-		entry = self.hashtable_get_entry(bucket, key)		
+		entry = self.hashtable_get_entry(bucket, key)
+		if entry:		
 			entry[1] = value
 			for each in self.all_entries:
 			    if each[0]==key:
-			    	each[1]=value			
-		bucket.append([key, value])
-		self.all_entries.append([key, value]) 				
+			    	each[1]=value
+			    	return
+		else:			
+			bucket.append([key, value])
+		self.all_entries.append([key, value]) 
+		print self.all_entries				
 		self.total_keys = self.total_keys + 1		
 		self.check_load()		
 			
@@ -78,8 +82,10 @@ class Hashtable(object):
 	def re_distribute(self):
 		self.clear_buckets()		
 		for each in self.all_entries:
+			print "each in self.all_entries"
+			print each
 			bucket = self.hashtable_get_bucket(each[0])
-			#entry = self.hashtable_get_entry(bucket, each[0])
+			entry = self.hashtable_get_entry(bucket, each[0])
 			bucket.append([each[0], each[1]])
 					
 	def shrink_hashtable(self):		
@@ -131,13 +137,17 @@ print hashtable1.hashtable_lookup('lizard')
 """check lookup of non-existing key"""
 print hashtable1.hashtable_lookup('donkey')
 
-# """check update of value"""
-# hashtable1.hashtable_insert('elephant', 'super')
-# hashtable1.hashtable_insert('lizard', 1000)
-# print hashtable1.hashtable_lookup('lizard')
-# print hashtable1.hashtable_lookup('elephant')
+"""check update of value"""
+hashtable1.hashtable_insert('elephant', 'super')
+hashtable1.hashtable_insert('lizard', 1000)
+print hashtable1.hashtable_lookup('lizard')
+print hashtable1.hashtable_lookup('elephant')
 
 print hashtable1
+
+print "all_entries at the end"
+print hashtable1.all_entries
+print hashtable1.total_keys
 
 
 
