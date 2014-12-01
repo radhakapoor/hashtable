@@ -1,7 +1,7 @@
 
 
-class Hashtable(object):	
-	total_keys = 0
+class Hashtable(object):
+	
 	all_entries = []
 	
 	def __init__(self, size):
@@ -56,8 +56,7 @@ class Hashtable(object):
 				return self.hashtable
 			else:								
 				collision.append([key, value])
-		self.all_entries.append([key, value]) 						
-		self.total_keys = self.total_keys + 1		
+		self.all_entries.append([key, value]) 			
 		self.check_load()
 
 	def collision_handling():
@@ -83,7 +82,7 @@ class Hashtable(object):
 		
 	def check_load(self):
 		"""checks load to see if resizing required"""		
-		load_factor = float(self.total_keys) / float(self.size)		
+		load_factor = float(len(self.all_entries)) / float(self.size)		
 		if load_factor > 0.66:			
 			return self.enlarge_hashtable()
 		elif load_factor < 0.33:			
@@ -129,15 +128,14 @@ class Hashtable(object):
 				collision = self.collision_handling(each[0], bucket_no)
 				collision.append([each[0], each[1]])								
 			
-	#rewrite to use notations for deleted items so does not disrupt collision lookups
+	#rewrite to mark deleted items as 'deleted' so as not to disrupt lookups based on open addressing
 	def hashtable_delete(self, key):
 		"""deletes entries from hashtable"""
 		bucket = self.hashtable_get_bucket(key)
 		entry = self.hashtable_get_entry(bucket, key) 		
 		if entry:
 			bucket.remove(entry[:2])
-			self.all_entries.remove(entry[:2])
-		self.total_keys = self.total_keys - 1	
+			self.all_entries.remove(entry[:2])			
 		self.check_load()
 		return	
 	
