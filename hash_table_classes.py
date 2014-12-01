@@ -1,10 +1,9 @@
 
 
-class Hashtable(object):
-	
+class Hashtable(object):	
 	total_keys = 0
 	all_entries = []
-
+	
 	def __init__(self, size):
 		"""initializes hashtable"""		
 		self.size = size
@@ -40,18 +39,30 @@ class Hashtable(object):
 
 	def hashtable_insert(self, key, value):	
 		"""updates / inserts entries"""	
+		bucket_no = self.hash_string(key)
 		bucket = self.hashtable_get_bucket(key)
 		entry = self.hashtable_get_entry(bucket, key)
 		if entry:		
 			entry[1] = value
 			self.update_all_entries(key, value)
-			return
-		else:			
-			bucket.append([key, value])
+			return self.hashtable
+		elif len(bucket)==0:
+			bucket.append([key, value])			
+		else:
+			collision = self.collision_handling(key, bucket_no)					
+			if collision:
+				collision[1] = value
+				self.update_all_entries(key, value)	
+				return self.hashtable
+			else:								
+				collision.append([key, value])
 		self.all_entries.append([key, value]) 						
 		self.total_keys = self.total_keys + 1		
 		self.check_load()
-	
+
+	def collision_handling():
+		pass
+		
 	def update_all_entries(self, key, value):
 		"""updates storage of all key, values. necessary for resizing mechanics"""
 		for each in self.all_entries:
@@ -60,11 +71,15 @@ class Hashtable(object):
 		
 	def hashtable_lookup(self, key):
 		"""looks up value"""
+		bucket_no = self.hash_string(key)
 		entry = self.hashtable_get_entry(self.hashtable_get_bucket(key), key)
 		if entry:					
-			return entry[1]			
+			return entry[1]
 		else:
-			return "Error! {} is not a key in the hashtable".format(key)
+			collision = self.collision_handling(key, bucket_no)
+			if collision:
+				return collision[1]			
+		return "Error! {} is not a key in the hashtable".format(key)
 		
 	def check_load(self):
 		"""checks load to see if resizing required"""		
@@ -106,11 +121,15 @@ class Hashtable(object):
 		"""re-hashes key, values upon resizing"""
 		self.clear_buckets()		
 		for each in self.all_entries:			
-			bucket = self.hashtable_get_bucket(each[0])
-			entry = self.hashtable_get_entry(bucket, each[0])
-			bucket.append([each[0], each[1]])					
-		
-		
+			bucket = self.hashtable_get_bucket(each[0])			
+			if len(bucket)==0:
+				bucket.append([each[0], each[1]])
+			else:
+				bucket_no = self.hash_string(each[0])
+				collision = self.collision_handling(each[0], bucket_no)
+				collision.append([each[0], each[1]])								
+			
+	#rewrite to use notations for deleted items so does not disrupt collision lookups
 	def hashtable_delete(self, key):
 		"""deletes entries from hashtable"""
 		bucket = self.hashtable_get_bucket(key)
@@ -122,7 +141,7 @@ class Hashtable(object):
 		self.check_load()
 		return	
 	
-hashtable1 = Hashtable(30)
+hashtable1 = Hashtable(10)
 
 """check insert"""
 hashtable1.hashtable_insert('cat', 1)
@@ -134,10 +153,8 @@ hashtable1.hashtable_insert('crocodile', 6)
 hashtable1.hashtable_insert('elephant', 7)
 hashtable1.hashtable_insert('lizard', 8)
 hashtable1.hashtable_insert('rabbit', 9)
-print hashtable1.size
 
 """check lookup"""
-print "check lookup"
 print hashtable1.hashtable_lookup('cat')
 print hashtable1.hashtable_lookup('dog')
 print hashtable1.hashtable_lookup('fish')
@@ -147,11 +164,6 @@ print hashtable1.hashtable_lookup('crocodile')
 print hashtable1.hashtable_lookup('elephant')
 print hashtable1.hashtable_lookup('lizard')
 print hashtable1.hashtable_lookup('rabbit')
-
-"""check deletion"""
-hashtable1.hashtable_delete('crocadile')
-hashtable1.hashtable_delete('lizard')
-hashtable1.hashtable_delete('cat')
 
 """check lookup of non-existing key"""
 print hashtable1.hashtable_lookup('donkey')
@@ -165,11 +177,14 @@ print hashtable1.hashtable_lookup('elephant')
 print hashtable1.hashtable_lookup('lizard')
 print hashtable1.hashtable_lookup('rabbit')
 
+# """check deletion"""
+# hashtable1.hashtable_delete('crocodile')
+# hashtable1.hashtable_delete('lizard')
+# hashtable1.hashtable_delete('cat')
+
 print hashtable1
 
-print "all_entries:"
-print hashtable1.all_entries
-print hashtable1.total_keys
+
 
 
 
