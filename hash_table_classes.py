@@ -1,15 +1,16 @@
 
 
 class Hashtable(object):
-	
-	all_entries = []
+
+	# all_entries = []
 	
 	def __init__(self, size):
 		"""initializes hashtable"""		
 		self.size = size
 		self.hashtable = []
 		for i in xrange(self.size):
-		    self.hashtable.append([])	
+		    self.hashtable.append([])
+		self.all_entries = []
 
 	def __repr__(self):
 		return "size: {}, draw hashtable: {}".format(self.size, self.hashtable)	
@@ -33,7 +34,7 @@ class Hashtable(object):
 	def hashtable_get_entry(self, bucket, key):
 		""""fetches entry in bucket for a key"""
 		for entry in bucket:
-			if entry[0] == key:
+			if entry[0]==key:
 				return entry
 		return None
 
@@ -59,8 +60,19 @@ class Hashtable(object):
 		self.all_entries.append([key, value]) 			
 		self.check_load()
 
-	def collision_handling():
-		pass
+	def collision_handling(self, key, bucket_no):
+		for bucket in self.hashtable:
+			bucket_no += 1
+			if bucket_no >= len(self.hashtable):
+				bucket_no = 0
+			check_bucket = self.hashtable[bucket_no]
+			if len(check_bucket)==0:
+				return check_bucket
+			else: 
+				for entry in check_bucket:
+					if entry[0]==key:
+						return entry
+		raise ValueError
 		
 	def update_all_entries(self, key, value):
 		"""updates storage of all key, values. necessary for resizing mechanics"""

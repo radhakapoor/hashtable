@@ -1,16 +1,11 @@
 *.pyc
 .DS_Store
-HashTable.pdf
 hashtable_.py
-udacity_problem5.py
 s_hashtable.py
 ord.py
 debugging.py
 hash_table_practice.py
-hashtable_collisions.py
 printout.txt
 printout2.txt
-refactor_zach.py
 s_hashtable.py
-collision_detection.py
-s_hashtable_practice.py
+
