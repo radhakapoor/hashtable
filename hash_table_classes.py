@@ -2,8 +2,7 @@
 
 class Hashtable(object):
 
-	# all_entries = []
-	
+		
 	def __init__(self, size):
 		"""initializes hashtable"""		
 		self.size = size
@@ -32,7 +31,7 @@ class Hashtable(object):
 		return self.hashtable[bucket_no]
 		
 	def hashtable_get_entry(self, bucket, key):
-		""""fetches entry in bucket for a key"""
+		"""fetches entry in bucket for a key"""
 		for entry in bucket:
 			if entry[0]==key:
 				return entry
@@ -113,7 +112,7 @@ class Hashtable(object):
 		return self.hashtable
 
 	def shrink_hashtable(self):
-		""""halves size of hashtable"""		
+		"""halves size of hashtable"""		
 		existing_buckets = self.size
 		self.size = self.size / 2
 		remove_buckets = existing_buckets - self.size		
